@@ -1,0 +1,20 @@
+[Unit]
+Description=Redis data structure server
+Documentation=https://redis.io/documentation
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+ExecStart={{ pillar['redis_install_dir'] }}/bin/redis-server {{ pillar['redis_install_dir'] }}/conf/redis.conf --supervised systemd
+ExecStop={{ pillar['redis_install_dir'] }}/bin/redis-server SHUTDOWN
+LimitNOFILE=10032
+NoNewPrivileges=yes
+#OOMScoreAdjust=-900
+#PrivateTmp=yes
+Type=notify
+TimeoutStartSec=infinity
+TimeoutStopSec=infinity
+UMask=0077
+
+[Install]
+WantedBy=multi-user.target
